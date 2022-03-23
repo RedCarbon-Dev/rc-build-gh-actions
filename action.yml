@@ -10,6 +10,10 @@ inputs:
   docker-target:
     description: "Docker Target"
     required: true
+  docker-context:
+    description: "Docker Context Path"
+    required: true
+    default: "."
   google-credentials:
     description: "Google Credentials"
     required: true
@@ -61,3 +65,4 @@ runs:
         network: host
         tags: ${{ steps.docker_meta.outputs.tags }}
         target: ${{ inputs.docker-target }}
+        context: ${{ inputs.docker-context }}
