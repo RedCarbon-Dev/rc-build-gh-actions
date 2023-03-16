@@ -31,6 +31,9 @@ inputs:
     description: "Push to registry"
     required: false
     default: false
+  build-args:
+    description: "List of build-time variables"
+    required: false
 outputs:
   digest:
     description: "Docker Digest"
@@ -71,3 +74,4 @@ runs:
         tags: ${{ steps.docker_meta.outputs.tags }}
         target: ${{ inputs.docker-target }}
         context: ${{ inputs.docker-context }}
+        build-args: ${{ inputs.build-args }}
