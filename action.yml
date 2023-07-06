@@ -34,6 +34,9 @@ inputs:
   build-args:
     description: "List of build-time variables"
     required: false
+  file:
+    description: "Path to the Dockerfile."
+    required: false
 outputs:
   digest:
     description: "Docker Digest"
@@ -67,7 +70,7 @@ runs:
         password: "${{ steps.auth.outputs.access_token }}"
     - name: Build and push
       id: docker_build
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v4
       with:
         push: ${{ inputs.push }}
         network: host
@@ -75,3 +78,4 @@ runs:
         target: ${{ inputs.docker-target }}
         context: ${{ inputs.docker-context }}
         build-args: ${{ inputs.build-args }}
+        file: ${{ inputs.file }}
