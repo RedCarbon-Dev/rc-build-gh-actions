@@ -46,7 +46,7 @@ runs:
   steps:
     - name: Docker meta
       id: docker_meta
-      uses: crazy-max/ghaction-docker-meta@v1
+      uses: crazy-max/ghaction-docker-meta@v5
       with:
         images: |
           ${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}
@@ -58,7 +58,7 @@ runs:
           ${{inputs.branch}}-${{inputs.sha}}-${{ inputs.ts }}
     - id: "auth"
       name: "Authenticate to Google Cloud"
-      uses: "google-github-actions/auth@v0"
+      uses: "google-github-actions/auth@v2"
       with:
         credentials_json: "${{ inputs.google-credentials }}"
         token_format: "access_token"
