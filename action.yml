@@ -50,12 +50,11 @@ runs:
       with:
         images: |
           ${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}
-        tag-sha: true
-        tag-semver: |
-          {{version}}
-          {{major}}.{{minor}}
-        tag-custom: |
-          ${{inputs.branch}}-${{inputs.sha}}-${{ inputs.ts }}
+        tags: |
+          type=sha
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}} 
+          type=raw,value=${{ inputs.branch }}-${{ inputs.sha }}-${{ inputs.ts }}
     - id: "auth"
       name: "Authenticate to Google Cloud"
       uses: "google-github-actions/auth@v2"
