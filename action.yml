@@ -87,7 +87,7 @@ runs:
         for tag in ${TAGS}; do
           images+="${tag}@${DIGEST} "
         done
-        cosign sign --yes --key gcpkms://projects/redcarbon-bb8b2/locations/global/keyRings/sbom-slsa-keyring/cryptoKeys/sbom-slsa-key-cc052a4 ${images} --tlog-upload=false
+        cosign sign --yes --key gcpkms://projects/redcarbon-bb8b2/locations/global/keyRings/sbom-slsa-keyring/cryptoKeys/sbom-slsa-key-feaf3d5 ${images} --tlog-upload=false
       shell: bash
       env:
         TAGS: ${{ steps.docker_meta.outputs.tags }}
