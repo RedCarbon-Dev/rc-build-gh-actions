@@ -44,6 +44,8 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@v3.5.0
     - name: Docker meta
       id: docker_meta
       uses: docker/metadata-action@v5
@@ -78,3 +80,15 @@ runs:
         context: ${{ inputs.docker-context }}
         build-args: ${{ inputs.build-args }}
         file: ${{ inputs.file }}
+    - name: Sign image with a key
+      id: sign
+      run: |
+        images=""
+        for tag in ${TAGS}; do
+          images+="${tag}@${DIGEST} "
+        done
+        cosign sign --yes --key gcpkms://projects/redcarbon-bb8b2/locations/global/keyRings/sbom-slsa-keyring/cryptoKeys/sbom-slsa-key-cc052a4 ${images} --tlog-upload=false
+      shell: bash
+      env:
+        TAGS: ${{ steps.docker_meta.outputs.tags }}
+        DIGEST: ${{ steps.docker_build.outputs.digest }}
