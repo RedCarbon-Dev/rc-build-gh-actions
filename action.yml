@@ -80,6 +80,10 @@ runs:
         context: ${{ inputs.docker-context }}
         build-args: ${{ inputs.build-args }}
         file: ${{ inputs.file }}
+    - name: Get Image Var
+      id: image-var
+      run: |
+        echo "image=${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}@${{ steps.docker_build.outputs.digest }}" >> "$GITHUB_OUTPUT"
     - name: Sign image with a key
       id: sign
       run: |
@@ -96,12 +100,10 @@ runs:
       id: sbom
       uses: anchore/sbom-action@v0
       with:
-        image: ${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}@${{ steps.docker_build.outputs.digest }}
+        image: ${{ steps.image-var.outputs.image }}
         artifact-name: sbom.spdx
         output-file: ./sbom.spdx
     - name: Publish SBOM
       id: publish-sbom
-      run: |
-        ls
-        cat sbom.spdx
+      run: cosign attach sbom --sbom sbom.spdx ${{ steps.image-var.outputs.image }}
       shell: bash
