@@ -98,7 +98,10 @@ runs:
       with:
         image: ${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}@${{ steps.docker_build.outputs.digest }}
         artifact-name: sbom.spdx
+        output-file: ./
     - name: Publish SBOM
       id: publish-sbom
-      run: ls
+      run: |
+        ls
+        cat sbom.spdx
       shell: bash
