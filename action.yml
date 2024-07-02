@@ -84,6 +84,7 @@ runs:
       id: image-var
       run: |
         echo "image=${{ inputs.docker-registry }}/${{ inputs.docker-base-image-path }}/${{ github.repository }}/${{ inputs.docker-target }}@${{ steps.docker_build.outputs.digest }}" >> "$GITHUB_OUTPUT"
+      shell: bash
     - name: Sign image with a key
       id: sign
       run: |
